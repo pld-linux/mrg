@@ -1,0 +1,20 @@
+--- mrg-b0cb507a366775a008cf083e1bcac07623d04ae2/lib/nchanterm.c.orig	2015-07-27 19:55:34.000000000 +0200
++++ mrg-b0cb507a366775a008cf083e1bcac07623d04ae2/lib/nchanterm.c	2015-11-23 21:57:25.049098794 +0100
+@@ -990,7 +990,7 @@
+       signal (SIGWINCH, nc_resize_term);
+     }
+   if (mouse_mode)
+-    printf(mouse_modes[mouse_mode]);
++    printf("%s", mouse_modes[mouse_mode]);
+ 
+   {
+     int elapsed = 0;
+@@ -1152,7 +1152,7 @@
+     mode = 1;
+   if (mode != mouse_mode)
+   {
+-    printf (mouse_modes[mode]);
++    printf ("%s", mouse_modes[mode]);
+     fflush (stdout);
+   }
+   mouse_mode = mode;
