@@ -2,11 +2,13 @@ Summary:	Microraptor GUI
 Summary(pl.UTF-8):	Microraptor GUI - graficzny interfejs użytkownika
 Name:		mrg
 Version:	0.1.0
-Release:	1
+%define 	gitref	b01cc70988e28824108137e6cb48a83553d8f0f8
+%define		snap	20170715
+Release:	1.%{snap}.1
 License:	LGPL v2+
 Group:		Libraries
-Source0:	https://github.com/hodefoting/mrg/releases/download/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	a14c5551d061305c1040764c71d62c8d
+Source0:	https://github.com/hodefoting/mrg/archive/%{gitref}/%{name}-%{snap}.tar.gz
+# Source0-md5:	8842a1abb230cfaa23f8d3a3b97f4ae3
 Patch0:		%{name}-mm.patch
 Patch1:		%{name}-format.patch
 URL:		https://github.com/hodefoting/mrg/
@@ -69,7 +71,7 @@ Static mrg library.
 Statyczna biblioteka mrg.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{gitref}
 %patch0 -p1
 %patch1 -p1
 
