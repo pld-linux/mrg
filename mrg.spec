@@ -1,20 +1,20 @@
 Summary:	Microraptor GUI
 Summary(pl.UTF-8):	Microraptor GUI - graficzny interfejs użytkownika
 Name:		mrg
-Version:	0.1.0
-%define 	gitref	b01cc70988e28824108137e6cb48a83553d8f0f8
-%define		snap	20170715
+Version:	0.1.2
+%define 	gitref	46c9f8067804ebd141930bb854fc864764756ac5
+%define		snap	20180122
 Release:	1.%{snap}.1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://github.com/hodefoting/mrg/archive/%{gitref}/%{name}-%{snap}.tar.gz
-# Source0-md5:	8842a1abb230cfaa23f8d3a3b97f4ae3
+# Source0-md5:	ad2c1de0aef868100c9dad71a2ac5a7e
 Patch0:		%{name}-mm.patch
 Patch1:		%{name}-format.patch
 URL:		https://github.com/hodefoting/mrg/
 BuildRequires:	SDL-devel >= 1.2
 BuildRequires:	cairo-devel
-BuildRequires:	mmm-devel
+BuildRequires:	mmm-devel >= 0-0.20171127.1
 BuildRequires:	gtk+3-devel >= 3.0
 BuildRequires:	pkgconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -49,7 +49,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki mrg
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	cairo-devel
-Requires:	mmm-devel
+Requires:	mmm-devel >= 0-0.20171127.1
 Requires:	gtk+3-devel >= 3.0
 
 %description devel
