@@ -1,24 +1,36 @@
---- mmm-e41eee502568d479c6483ecae7f554312ab4ad27/.mm/bin.orig	2015-04-15 17:22:26.000000000 +0200
-+++ mmm-e41eee502568d479c6483ecae7f554312ab4ad27/.mm/bin	2015-11-23 19:55:08.826073329 +0100
+diff -burN mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361.orig/Makefile mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361/Makefile
+--- mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361.orig/Makefile	2019-03-22 02:34:36.000000000 +0100
++++ mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361/Makefile	2019-04-09 07:39:01.369907820 +0200
+@@ -69,7 +69,7 @@
+ 
+ install: install-extra
+ install-extra:
+-	install mrg-host mrg-terminal mrg-edit mrg-browser $(DESTDIR)$(PREFIX)/bin/
++	cp -a mrg-host mrg-terminal mrg-edit mrg-browser $(DESTDIR)$(PREFIX)/bin/
+ 
+ luajit/mrg_h.lua: lib/*.h Makefile
+ 	echo "local ffi = require'ffi'" > $@
+diff -burN mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361.orig/.mm/bin mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361/.mm/bin
+--- mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361.orig/.mm/bin	2019-03-22 02:34:36.000000000 +0100
++++ mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361/.mm/bin	2019-04-09 07:36:36.485673498 +0200
 @@ -12,11 +12,11 @@
  BIN_LD_FLAGS += $(shell test "$(BIN_PKGMODULES)" 2>/dev/null && pkg-config $(BIN_PKGMODULES) --libs)
  
  $(BINARY): $(BIN_CFILES) $(LIBNAME_A)
--	@echo "CCLD" $@; $(CC) $(SYSROOT) -Ilib -I .. $(BIN_CFLAGS) $(BIN_LD_FLAGS)  \
--		$(BIN_CFILES) $(LIBNAME_A) -o $@
+-	@echo "CCLD" $@; $(CC) $(SYSROOT) -Ilib -I .. $(BIN_CFLAGS)  \
 +	echo "CCLD" $@; $(CC) $(SYSROOT) -Ilib -I .. $(BIN_CFLAGS)  \
-+		$(BIN_CFILES) $(LIBNAME_A) $(BIN_LD_FLAGS) -o $@
+ 		$(BIN_CFILES) $(LIBNAME_A) $(BIN_LD_FLAGS) -o $@
  
  $(BINARY).efence: $(BIN_CFILES) $(LIBNAME_A) 
--	@echo "CCLD" $@; $(CC) $(SYSROOT) -Ilib -I .. $(BIN_CFLAGS) $(BIN_LD_FLAGS) \
--		$(BIN_CFILES) $(LIBNAME_A) -lefence -o $@
-+	echo "CCLD" $@; $(CC) $(SYSROOT) -Ilib -I .. $(BIN_CFLAGS) \
-+		$(BIN_CFILES) $(LIBNAME_A) $(BIN_LD_FLAGS) -lefence -o $@
+-	@echo "CCLD" $@; $(CC) $(SYSROOT) -Ilib -I .. $(BIN_CFLAGS)  \
++	echo "CCLD" $@; $(CC) $(SYSROOT) -Ilib -I .. $(BIN_CFLAGS)  \
+ 		$(BIN_CFILES) $(LIBNAME_A) $(BIN_LD_FLAGS) -lefence -o $@
  
  all: $(BIN_TARGETS)
---- mrg-b0cb507a366775a008cf083e1bcac07623d04ae2/.mm/lib.orig	2015-11-23 20:53:44.365925795 +0100
-+++ mrg-b0cb507a366775a008cf083e1bcac07623d04ae2/.mm/lib	2015-11-23 20:56:53.995917836 +0100
-@@ -16,23 +16,23 @@ LIB_LD_FLAGS += $(shell test "$(LIB_PKGM
+diff -burN mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361.orig/.mm/lib mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361/.mm/lib
+--- mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361.orig/.mm/lib	2019-03-22 02:34:36.000000000 +0100
++++ mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361/.mm/lib	2019-04-09 07:38:13.704082927 +0200
+@@ -16,23 +16,23 @@
  LIBNAME_A=$(LIBNAME).a
  
  $(LIBNAME).a: $(LIB_OBJS)
@@ -47,16 +59,15 @@
  
  LIBDIR ?= $(PREFIX)/lib
  #$(P64)
-@@ -71,7 +71,7 @@
+@@ -71,12 +71,12 @@
  EXAMPLES_LD_FLAGS += $(shell test "$(EXAMPLES_PKGMODULES)" 2>/dev/null && pkg-config $(EXAMPLES_PKGMODULES) --libs | sed 's/-Wl,--export-dynamic//' | sed 's/-pthread//')
  
  examples/%: examples/%.c $(LIBNAME).a
--	@echo "CCLD" $@; $(CC) -I.. -I. $(EXAMPLES_CFLAGS) $(LIB_CFLAGS) $(LIB_LD_FLAGS) $(EXAMPLES_LD_FLAGS) $< $(LIBNAME).a -o $@
-+	echo "CCLD" $@; $(CC) -I.. -I. $(EXAMPLES_CFLAGS) $(LIB_CFLAGS) $(LIB_LD_FLAGS) $(EXAMPLES_LD_FLAGS) $< $(LIBNAME).a -o $@
+-	@echo "CCLD" $@; $(CC) -I.. -I. $(EXAMPLES_CFLAGS) $(LIB_CFLAGS) $< $(LIBNAME).a $(EXAMPLES_LD_FLAGS) $(LIB_LD_FLAGS) -o $@
++	echo "CCLD" $@; $(CC) -I.. -I. $(EXAMPLES_CFLAGS) $(LIB_CFLAGS) $< $(LIBNAME).a $(EXAMPLES_LD_FLAGS) $(LIB_LD_FLAGS) -o $@
  
  
  all: $(EXAMPLES_BINS)
-@@ -78,5 +78,5 @@ all: $(EXAMPLES_BINS)
  CLEAN_FILES += $(EXAMPLES_BINS)
  help: _libhelp
  _libhelp:
@@ -64,8 +75,9 @@
 -	@echo "$(LIBNAME).a         static library"
 +	echo "$(LIBNAME).$(LIBEXT) dynamic shared library"
 +	echo "$(LIBNAME).a         static library"
---- mmm-e41eee502568d479c6483ecae7f554312ab4ad27/.mm/pkgconfig.orig	2015-04-15 17:22:26.000000000 +0200
-+++ mmm-e41eee502568d479c6483ecae7f554312ab4ad27/.mm/pkgconfig	2015-11-23 20:21:30.166007161 +0100
+diff -burN mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361.orig/.mm/pkgconfig mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361/.mm/pkgconfig
+--- mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361.orig/.mm/pkgconfig	2019-03-22 02:34:36.000000000 +0100
++++ mrg-ba04b1ee9c63cbd50ea0ac9211fad881a0724361/.mm/pkgconfig	2019-04-09 07:38:42.905609331 +0200
 @@ -6,7 +6,7 @@
  	@echo " gen" $@
  	@echo "prefix=$(PREFIX)"     > $@
@@ -75,14 +87,3 @@
  	@echo includedir=\$${prefix}/include >> $@
  	@echo apiversion=$(API_VERSION) >> $@
  	@echo >> $@
---- mrg-b0cb507a366775a008cf083e1bcac07623d04ae2/Makefile.orig	2015-07-27 19:55:34.000000000 +0200
-+++ mrg-b0cb507a366775a008cf083e1bcac07623d04ae2/Makefile	2015-11-23 21:23:14.215851520 +0100
-@@ -60,7 +60,7 @@
- 
- install: install-extra
- install-extra:
--	install mrg-host mrg-terminal mrg-edit mrg-browser $(DESTDIR)$(PREFIX)/bin/
-+	cp -a mrg-host mrg-terminal mrg-edit mrg-browser $(DESTDIR)$(PREFIX)/bin/
- 
- luajit/mrg_h.lua: lib/*.h Makefile
- 	echo "local ffi = require'ffi'" > $@
