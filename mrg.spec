@@ -13,6 +13,7 @@ Patch0:		%{name}-mm.patch
 Patch1:		%{name}-format.patch
 URL:		https://github.com/hodefoting/mrg/
 BuildRequires:	SDL-devel >= 1.2
+BuildRequires:	alsa-lib-devel
 BuildRequires:	cairo-devel
 BuildRequires:	mmm-devel >= 0-0.20171127.1
 BuildRequires:	gtk+3-devel >= 3.0
@@ -48,6 +49,7 @@ Summary:	Header files for mrg library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki mrg
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	alsa-lib-devel
 Requires:	cairo-devel
 Requires:	mmm-devel >= 0-0.20171127.1
 Requires:	gtk+3-devel >= 3.0
