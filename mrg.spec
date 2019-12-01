@@ -2,20 +2,21 @@ Summary:	Microraptor GUI
 Summary(pl.UTF-8):	Microraptor GUI - graficzny interfejs użytkownika
 Name:		mrg
 Version:	0.1.2
-%define 	gitref	ba04b1ee9c63cbd50ea0ac9211fad881a0724361
-%define		snap	20190322
+%define 	gitref	ae40b7150f5e050469727641767c253214210114
+%define		snap	20190916
 Release:	1.%{snap}.1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://github.com/hodefoting/mrg/archive/%{gitref}/%{name}-%{snap}.tar.gz
-# Source0-md5:	5a2009b7431e6baeb067cce61851833f
-Patch0:		%{name}-mm.patch
+# Source0-md5:	9ba3ffbae7965e77c2e0dd8099f8d97e
 Patch1:		%{name}-format.patch
 URL:		https://github.com/hodefoting/mrg/
 BuildRequires:	SDL-devel >= 1.2
 BuildRequires:	alsa-lib-devel
 BuildRequires:	cairo-devel
-BuildRequires:	mmm-devel >= 0-0.20171127.1
+BuildRequires:	meson >= 0.50.0
+BuildRequires:	ninja >= 1.5
+BuildRequires:	mmm-devel >= 0-0.20191113.1
 BuildRequires:	gtk+3-devel >= 3.0
 BuildRequires:	pkgconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -37,6 +38,7 @@ edytor tekstu.
 Summary:	Shared mrg library
 Summary(pl.UTF-8):	Biblioteka współdzielona mrg
 Group:		Libraries
+Requires:	mmm-libs >= 0-0.20191113.1
 
 %description libs
 Shared mrg library.
@@ -51,7 +53,7 @@ Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	alsa-lib-devel
 Requires:	cairo-devel
-Requires:	mmm-devel >= 0-0.20171127.1
+Requires:	mmm-devel >= 0-0.20191113.1
 Requires:	gtk+3-devel >= 3.0
 
 %description devel
@@ -74,25 +76,17 @@ Statyczna biblioteka mrg.
 
 %prep
 %setup -q -n %{name}-%{gitref}
-%patch0 -p1
 %patch1 -p1
 
 %build
-# not autoconf configure
-./configure \
-	CFLAGS="%{rpmcflags} -std=gnu99"\
-	--prefix=%{_prefix} \
-	--libdir=%{_libdir}
-%{__make} \
-	CC="%{__cc}" \
-	LD="%{__cc}" \
-	LD_FLAGS="%{rpmldflags}"
+%meson build
+
+%ninja_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} -j1 install \
-	DESTDIR=$RPM_BUILD_ROOT
+%ninja_install -C build
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -104,10 +98,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README.md
 %attr(755,root,root) %{_bindir}/mrg
-%attr(755,root,root) %{_bindir}/mrg-browser
-%attr(755,root,root) %{_bindir}/mrg-edit
-%attr(755,root,root) %{_bindir}/mrg-host
-%attr(755,root,root) %{_bindir}/mrg-terminal
 
 %files libs
 %defattr(644,root,root,755)
@@ -115,7 +105,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/mrg
+%{_includedir}/mrg-0.0
 %{_pkgconfigdir}/mrg.pc
 
 %files static
